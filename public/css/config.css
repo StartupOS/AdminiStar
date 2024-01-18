@@ -1,0 +1,29 @@
+button {
+    cursor: pointer;
+    margin: 0.2em 0.5em;
+}
+td{
+    padding-right: 0.5em;
+}
+button.remove{
+    /* color:red; */
+    font-weight: 900;
+}
+body{
+    margin: 1em;
+    background-color: var(--bs-body-color);
+    color: var(--bs-body-bg)
+}
+div#ConfCard{
+    background-color: var(--bs-dark-text-emphasis);
+    border: 1px solid white;
+    border-radius:2em;
+    padding: 1em;
+    max-width: 40em;
+}
+div#InsightCard{
+    background-color: var(--bs-dark-text-emphasis);
+    border: 1px solid white;
+    border-radius:2em;
+    padding: 1em;
+}

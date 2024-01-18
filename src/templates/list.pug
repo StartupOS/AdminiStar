@@ -1,0 +1,80 @@
+html
+    head 
+        title Administrator List
+        include ./header
+        script.
+            window.list = !{JSON.stringify(list)}
+    body
+        table 
+    thead 
+        each col in visibleColumns
+            th
+                button(id=`${col}`)= col
+    tbody 
+        each row in rows 
+            tr 
+                each col in visibleColumns
+                    unless col in hiddenColumns
+                        td(class=`${col}`)= row[col]
+if prev
+    button(id="prev") < Previous
+button(id='clear') Clear Query
+if next
+    button(id="next") Next >
+style. 
+    th{
+        border:1px solid black;
+    }
+    table{
+        border:1px solid black;
+        margin-left: auto; 
+        margin-right: auto; 
+        //- width: 90%; 
+        table-layout:fixed;
+    }
+script. 
+    const next = document.getElementById('next');
+    const prev = document.getElementById('prev');
+    const u = new URL(window.location.href);
+    f(prev){
+        next.addEventListener('click', ()=>{
+            const o = u.searchParams.get('offset') || 0;
+            const l = u.searchParams.get('limit') || 100;
+            u.searchParams.set('offset', o - l);
+            window.location = u.href
+        });
+    }
+    if(next){
+        next.addEventListener('click', ()=>{
+            const o = u.searchParams.get('offset') || 0;
+            const l = u.searchParams.get('limit') || 100;
+            u.searchParams.set('offset', o + l);
+            window.location = u.href
+        });
+    }
+    const clearButton = document.getElementById('clear');
+    if(clearButton){
+        clearButton.addEventListener('click',()=>{
+            window.location = window.location.href.split('?')[0]
+        })
+    }
+    Array.from(document.querySelectorAll('th>button')).forEach(link=>{
+        const order = u.searchParams.get('order') || 'id';
+        let desc = u.searchParams.get('desc') || false;
+        link.addEventListener('click', ()=>{
+            const o = link.getAttribute('id')
+            if(desc == 'false')
+                desc = false;
+            console.log('desc', desc)
+            console.log('desc', !!desc)
+
+            u.searchParams.set('order', o);
+            if(desc){
+                u.searchParams.set('desc', false)
+            } else {
+                u.searchParams.set('desc', true)
+            }
+            window.location = u.href;
+
+        })
+    })

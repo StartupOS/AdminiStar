@@ -1,0 +1,45 @@
+html
+    head 
+        title Edit: ${entity.name} ${entity.id}
+        include ./header
+    body
+        div(id="ConfCard")
+            h1 Administrator (EDITING) - ${entity.name} ${entity.id}
+            table 
+                thead
+                    tr 
+                        th Property
+                        th Value
+                tbody 
+                    for key in Object.keys(entity).sort()
+                        if typeof entity[key] != 'function'
+                            if key in visibleColumns
+                                unless key in hiddenColumns
+                                    tr(data-property=`${key}`) 
+                                        td(title=`Property Name: ${key}`)= key.replace(key[0], key[0].toUpperCase()).replaceAll('_', ' ').replaceAll(/([a-z])([A-Z])/g,'\$1 \$2') 
+                                        td
+                                            if key in editableColumns
+                                                unless key in protectedColumns
+                                                    if typeof entity[key] == 'number'
+                                                        input(value=entity[key].value, id=key, type="number")
+                                                    if typeof entity[key] == 'boolean'
+                                                        input(value=entity[key].value, id=key, name=key, type="checkbox")
+                                                    if typeof entity[key] == 'string'
+                                                        if entity[key].length < 30
+                                                            input(value=entity[key].value, id=key, name=key)
+                                                        else
+                                                            textarea(value=entity[key].value, id=key, name=key, cols="30", rows="10") 
+                            
+            button(id="save" class="btn btn-success") Save 
+            script. 
+                const b = document.getElementById('save');
+                b.addEventListener('click', async()=>{
+                    b.disabled = true;
+                    const res = await fetch("url", {
+                        method: "PUT"
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    })
+                })

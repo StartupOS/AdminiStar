@@ -1,0 +1,24 @@
+html
+    head 
+        title ${entity.name} ${entity.id} View
+        include ./header
+    body
+        div(id="ConfCard")
+            h1 Administrator - ${entity.name} ${entity.id}
+            table 
+                thead
+                    tr 
+                        th Property
+                        th Value
+                tbody 
+                    for key in Object.keys(entity).sort()
+                        if typeof entity[key] != 'function'
+                            if key in visibleColumns
+                                unless key in hiddenColumns
+                                    tr(data-property=`${key}`) 
+                                        td(title=`Property Name: ${key}`)= key.replace(key[0], key[0].toUpperCase()).replaceAll('_', ' ').replaceAll(/([a-z])([A-Z])/g,'\$1 \$2') 
+                                        td= entity[key] 
+                                            //- input(value=config[key].value, id=key)
+                            
+            //- button(id="save" class="btn btn-success") Save 
+            
