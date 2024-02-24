@@ -198,12 +198,13 @@ export class AdminiStar {
         }
     }
 
-    public init(
+    public async init(
         args?:{
             opts?:optsType
         }
     ){
         const {entities, dataSource} = this;
+        await dataSource.initialize()
         const myOpts = args?.opts || {}
         const opts = {
             ...this.opts,
